@@ -4,9 +4,10 @@ import { getNumberbOfPages } from "../../queries";
 import ricksHead from "../../imgs/ricks-head.png"
 import searchLogo from "../../imgs/search.png"
 import "./App.css"
+import CharactersPage from "../CharacterPage/CharactersPage";
 
 export default function App(){
-    const {loading, error, data} = useQuery(getNumberbOfPages)
+    const {loading, error, data} = useQuery(getNumberbOfPages())
 
     return <>
         <Navbar bg="primary">
@@ -30,12 +31,13 @@ export default function App(){
             </Container>
         </Navbar>
         <Container>
+            <CharactersPage page={1}/>
             <Pagination>
-            <Pagination.First />
-            <Pagination.Prev />
-            <Pagination.Item>{1}</Pagination.Item>
-            <Pagination.Next />
-            <Pagination.Last />
+                <Pagination.First />
+                <Pagination.Prev />
+                <Pagination.Item>{1}</Pagination.Item>
+                <Pagination.Next />
+                <Pagination.Last />
             </Pagination>
         </Container>
     </>
