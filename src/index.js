@@ -4,7 +4,7 @@ import App from './components/App/App'
 import {ApolloClient, InMemoryCache, ApolloProvider} from "@apollo/client"
 
 const client = new ApolloClient({
-  uri: 'https://api.thegraph.com/subgraphs/name/rarity-adventure/rarity', //https://api.thegraph.com/subgraphs/name/rarity-adventure/rarity
+  uri: 'https://rickandmortyapi.com/graphql',
   cache: new InMemoryCache()
 })
 

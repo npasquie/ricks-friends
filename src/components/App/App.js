@@ -1,9 +1,13 @@
-import { Button, Container, FormControl, InputGroup, Navbar, Stack, Col } from "react-bootstrap";
+import { Button, Container, FormControl, InputGroup, Navbar, Stack, Col, Pagination } from "react-bootstrap";
+import { useQuery } from "@apollo/client"
+import { getNumberbOfPages } from "../../queries";
 import ricksHead from "../../imgs/ricks-head.png"
 import searchLogo from "../../imgs/search.png"
 import "./App.css"
 
 export default function App(){
+    const {loading, error, data} = useQuery(getNumberbOfPages)
+
     return <>
         <Navbar bg="primary">
             <Container>
@@ -25,5 +29,14 @@ export default function App(){
                 </Col>
             </Container>
         </Navbar>
+        <Container>
+            <Pagination>
+            <Pagination.First />
+            <Pagination.Prev />
+            <Pagination.Item>{1}</Pagination.Item>
+            <Pagination.Next />
+            <Pagination.Last />
+            </Pagination>
+        </Container>
     </>
 }
