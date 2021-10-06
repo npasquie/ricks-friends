@@ -31,17 +31,19 @@ function Character({id}){
         console.log(error)
 
     return(<>
+        <Card bg="light" className="character">
         {loading && <Spinner animation="border"/>}
-        {data && <Card bg="light" className="character">
-            <Card.Img src={character.image}/>
-            <Card.Body>
-                <Card.Title>{character.name}</Card.Title>
-                <Card.Text>
-                    {character.species}
-                    &nbsp;
-                    {character.gender === "unknown" ? <><br/>unknown gender</> : character.gender}
-                </Card.Text>
-            </Card.Body>
-        </Card>}
+            {data && <>
+                <Card.Img src={character.image}/>
+                <Card.Body>
+                    <Card.Title>{character.name}</Card.Title>
+                    <Card.Text>
+                        {character.species}
+                        &nbsp;
+                        {character.gender === "unknown" ? <><br/>unknown gender</> : character.gender}
+                    </Card.Text>
+                </Card.Body>
+            </>}
+        </Card>
     </>)
 }

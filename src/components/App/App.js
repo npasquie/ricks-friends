@@ -6,8 +6,10 @@ import {
     Navbar,
     Stack,
     Col,
-    Spinner
-    } from "react-bootstrap";
+    Spinner,
+    Dropdown,
+    Form
+} from "react-bootstrap";
 import { useQuery } from "@apollo/client"
 import { useState } from "react";
 import { getNumberbOfPages } from "../../queries";
@@ -16,9 +18,18 @@ import searchLogo from "../../imgs/search.png"
 import "./App.css"
 import CharactersPage from "../CharacterPage/CharactersPage";
 import CharactersPagination from "../CharactersPagination/CharactersPagination";
+import lifeStatusesEnum from "../../misc/lifeStatusesEnum.json"
+import StatusFilter from "../StatusFilter";
 
 export default function App(){
     const [search, setSearch] = useState('')
+    const [filters, setFilters] = useState([true,true,true])
+
+    const toggleStatus = i => {
+        let newFilters = [...filters]
+        newFilters[i] = !filters[i]
+        setFilters(newFilters)
+    }
 
     return (<>
         <Navbar bg="primary">
@@ -31,14 +42,38 @@ export default function App(){
                         <div className="title">Rick's Friends</div>
                     </Stack>
                 </Col>
-                <Col md="auto">        
-                    <InputGroup size="sm">
-                        <FormControl placeholder="search" value={search}
-                            onChange={e => setSearch(e.target.value)}/>
-                        <Button variant="secondary" disabled>
-                            <img src={searchLogo} width="20" height="20"/>
-                        </Button>
-                    </InputGroup>
+                <Col md="auto">
+                    <Stack direction="horizontal" gap={3}>   
+                        <Dropdown>
+                            <Dropdown.Toggle variant="secondary" size="sm">
+                                Filters
+                            </Dropdown.Toggle>
+                            <Dropdown.Menu>
+                                <StatusFilter
+                                    statusName="Alive"
+                                    toggleStatus={toggleStatus}
+                                    check={filters[0]}
+                                    i={0}/>
+                                <StatusFilter
+                                    statusName="Dead"
+                                    toggleStatus={toggleStatus}
+                                    check={filters[1]}
+                                    i={1}/>
+                                <StatusFilter
+                                    statusName="Shrödinger"
+                                    toggleStatus={toggleStatus}
+                                    check={filters[2]}
+                                    i={2}/>
+                            </Dropdown.Menu>
+                        </Dropdown>     
+                        <InputGroup size="sm">
+                            <FormControl placeholder="search" value={search}
+                                onChange={e => setSearch(e.target.value)}/>
+                            <Button variant="secondary" disabled>
+                                <img src={searchLogo} width="20" height="20"/>
+                            </Button>
+                        </InputGroup>
+                    </Stack>
                 </Col>
             </Container>
         </Navbar>
