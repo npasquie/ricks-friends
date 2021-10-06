@@ -6,7 +6,6 @@ import {
     Navbar,
     Stack,
     Col,
-    Pagination,
     Spinner
     } from "react-bootstrap";
 import { useQuery } from "@apollo/client"
@@ -16,6 +15,7 @@ import ricksHead from "../../imgs/ricks-head.png"
 import searchLogo from "../../imgs/search.png"
 import "./App.css"
 import CharactersPage from "../CharacterPage/CharactersPage";
+import CharactersPagination from "../CharactersPagination/CharactersPagination";
 
 export default function App(){
     const {loading, error, data} = useQuery(getNumberbOfPages())
@@ -49,26 +49,15 @@ export default function App(){
         <Container>
             {loading && <Spinner animation="border"/>}
             {data && <>
+                <CharactersPagination 
+                    page={page} 
+                    setPage={setPage} 
+                    numberOfPages={numberOfPages}/>
                 <CharactersPage page={page}/>
-                <Pagination>
-                    {page !== 1 && <>
-                        <Pagination.First onClick={()=>{
-                            setPage(1)
-                        }}/>
-                        <Pagination.Prev onClick={()=>{
-                            setPage(page - 1)
-                        }}/>
-                    </>}
-                    <Pagination.Item>{page}</Pagination.Item>
-                    {page !== numberOfPages && <>
-                        <Pagination.Next onClick={()=>{
-                            setPage(page + 1)
-                        }}/>
-                        <Pagination.Last onClick={()=>{
-                            setPage(numberOfPages)
-                        }}/>
-                    </>}
-                </Pagination>
+                <CharactersPagination 
+                    page={page} 
+                    setPage={setPage} 
+                    numberOfPages={numberOfPages}/>
             </>}
         </Container>
     </>
