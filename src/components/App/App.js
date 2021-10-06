@@ -1,5 +1,16 @@
-import { Button, Container, FormControl, InputGroup, Navbar, Stack, Col, Pagination } from "react-bootstrap";
+import { 
+    Button,
+    Container,
+    FormControl,
+    InputGroup,
+    Navbar,
+    Stack,
+    Col,
+    Pagination,
+    Spinner
+    } from "react-bootstrap";
 import { useQuery } from "@apollo/client"
+import { useState } from "react";
 import { getNumberbOfPages } from "../../queries";
 import ricksHead from "../../imgs/ricks-head.png"
 import searchLogo from "../../imgs/search.png"
@@ -8,6 +19,11 @@ import CharactersPage from "../CharacterPage/CharactersPage";
 
 export default function App(){
     const {loading, error, data} = useQuery(getNumberbOfPages())
+    const [page, setPage] = useState(1)
+    let numberOfPages
+
+    if (data)
+        numberOfPages = data.characters.info.pages
 
     return <>
         <Navbar bg="primary">
@@ -31,14 +47,29 @@ export default function App(){
             </Container>
         </Navbar>
         <Container>
-            <CharactersPage page={1}/>
-            <Pagination>
-                <Pagination.First />
-                <Pagination.Prev />
-                <Pagination.Item>{1}</Pagination.Item>
-                <Pagination.Next />
-                <Pagination.Last />
-            </Pagination>
+            {loading && <Spinner animation="border"/>}
+            {data && <>
+                <CharactersPage page={page}/>
+                <Pagination>
+                    {page !== 1 && <>
+                        <Pagination.First onClick={()=>{
+                            setPage(1)
+                        }}/>
+                        <Pagination.Prev onClick={()=>{
+                            setPage(page - 1)
+                        }}/>
+                    </>}
+                    <Pagination.Item>{page}</Pagination.Item>
+                    {page !== numberOfPages && <>
+                        <Pagination.Next onClick={()=>{
+                            setPage(page + 1)
+                        }}/>
+                        <Pagination.Last onClick={()=>{
+                            setPage(numberOfPages)
+                        }}/>
+                    </>}
+                </Pagination>
+            </>}
         </Container>
     </>
 }

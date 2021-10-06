@@ -14,7 +14,7 @@ export default function CharactersPage({page}){
             {loading && <Spinner animation="border"/>}
             {data && <>
                 {data.characters.results.map(result => 
-                    <Character id={result.id} />)}
+                    <Character id={result.id} key={result.id}/>)}
             </>}
         </Row>
     </>)
@@ -37,7 +37,9 @@ function Character({id}){
             <Card.Body>
                 <Card.Title>{character.name}</Card.Title>
                 <Card.Text>
-                    {character.species} {character.gender}
+                    {character.species}
+                    &nbsp;
+                    {character.gender === "unknown" ? <><br/>unknown gender</> : character.gender}
                 </Card.Text>
             </Card.Body>
         </Card>}
