@@ -18,14 +18,9 @@ import CharactersPage from "../CharacterPage/CharactersPage";
 import CharactersPagination from "../CharactersPagination/CharactersPagination";
 
 export default function App(){
-    const {loading, error, data} = useQuery(getNumberbOfPages())
-    const [page, setPage] = useState(1)
-    let numberOfPages
+    const [search, setSearch] = useState('')
 
-    if (data)
-        numberOfPages = data.characters.info.pages
-
-    return <>
+    return (<>
         <Navbar bg="primary">
             <Container>
                 <Col>
@@ -38,27 +33,42 @@ export default function App(){
                 </Col>
                 <Col md="auto">        
                     <InputGroup size="sm">
-                        <FormControl placeholder="search"/>
-                        <Button variant="secondary">
+                        <FormControl placeholder="search" value={search}
+                            onChange={e => setSearch(e.target.value)}/>
+                        <Button variant="secondary" disabled>
                             <img src={searchLogo} width="20" height="20"/>
                         </Button>
                     </InputGroup>
                 </Col>
             </Container>
         </Navbar>
+        <AppBody search={search}/>
+    </>)
+}
+
+function AppBody({search}){
+    const {loading, error, data} = useQuery(getNumberbOfPages(search))
+    const [page, setPage] = useState(1)
+    let numberOfPages
+
+    if (data)
+        numberOfPages = data.characters.info.pages
+
+    return (<>
         <Container>
+            {error && <div className="noResult">No result for this search</div>}
             {loading && <Spinner animation="border"/>}
             {data && <>
                 <CharactersPagination 
                     page={page} 
                     setPage={setPage} 
                     numberOfPages={numberOfPages}/>
-                <CharactersPage page={page}/>
+                <CharactersPage page={page} search={search}/>
                 <CharactersPagination 
                     page={page} 
                     setPage={setPage} 
                     numberOfPages={numberOfPages}/>
             </>}
         </Container>
-    </>
+    </>)
 }

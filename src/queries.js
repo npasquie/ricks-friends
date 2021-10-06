@@ -1,8 +1,13 @@
 import { gql } from "@apollo/client"
 
-export function getNumberbOfPages() {
+export function getNumberbOfPages(search) {
+    let filterPart = ''
+
+    if(search !== '' || search === undefined)
+        filterPart = `(filter: {name: "${search}"})`
+
     return (gql`{
-        characters {
+        characters${filterPart} {
             info {
                 pages
             }
@@ -10,9 +15,14 @@ export function getNumberbOfPages() {
     }`)
 }
 
-export function getCharactersIdsOfPage(page) {
+export function getCharactersIdsOfPage(page,search) {
+    let filterPart = ''
+
+    if(search !== '' || search === undefined)
+        filterPart = `,filter: {name: "${search}"}`
+
     return(gql`{
-        characters(page: ${page}) {
+        characters(page: ${page}${filterPart}) {
             results{
                 id
             }

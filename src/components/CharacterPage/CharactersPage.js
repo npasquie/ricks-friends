@@ -3,8 +3,8 @@ import { Spinner, Card, Row } from "react-bootstrap"
 import { getCharacter, getCharactersIdsOfPage } from "../../queries"
 import "./CharacterPage.css"
 
-export default function CharactersPage({page}){
-    const {loading, error, data} = useQuery(getCharactersIdsOfPage(page))
+export default function CharactersPage({page, search}){
+    const {loading, error, data} = useQuery(getCharactersIdsOfPage(page, search))
 
     if(error)
         console.log(error)
