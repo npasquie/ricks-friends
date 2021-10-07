@@ -16,13 +16,6 @@ export function getNumberbOfPages(search,filter) {
 }
 
 export function getCharactersIdsOfPage(page,search,filter) {
-    console.log(`{
-        characters(page: ${page},${filterPart(search,filter)}) {
-            results{
-                id
-            }
-        }
-    }`);
     return(gql`{
         characters(page: ${page},${filterPart(search,filter)}) {
             results{

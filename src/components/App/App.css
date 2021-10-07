@@ -1,15 +1,3 @@
-.ricksHead{
-    display: inline-block;
-    vertical-align: top;
-    margin-left: 1em;
-}
-
-.title{
-    display: inline-block;
-    font-weight: bold;
-    color: white;
-}
-
 .noResult{
     margin: 1em;
 }

@@ -1,24 +1,12 @@
-import { 
-    Button,
-    Container,
-    FormControl,
-    InputGroup,
-    Navbar,
-    Stack,
-    Col,
-    Spinner,
-    Dropdown,
-    Form
-} from "react-bootstrap";
+import { Container, Spinner } from "react-bootstrap";
 import { useQuery } from "@apollo/client"
 import { useState } from "react";
+import { Route, Switch, Redirect } from "react-router-dom";
 import { getNumberbOfPages } from "../../queries";
-import ricksHead from "../../imgs/ricks-head.png"
-import searchLogo from "../../imgs/search.png"
 import "./App.css"
 import CharactersPage from "../CharacterPage/CharactersPage";
 import CharactersPagination from "../CharactersPagination/CharactersPagination";
-import StatusFilter from "../StatusFilter";
+import TopBar from "../TopBar/TopBar";
 
 export default function App(){
     const [search, setSearch] = useState('')
@@ -26,61 +14,18 @@ export default function App(){
     const [filterEnabled, setFilterEnabled] = useState(false)
 
     return (<>
-        <Navbar bg="primary">
-            <Container>
-                <Col>
-                    <Stack direction="horizontal">
-                        <Navbar.Brand>
-                            <img src={ricksHead} width="30" height="30" className="ricksHead"/>
-                        </Navbar.Brand>
-                        <div className="title">Rick's Friends</div>
-                    </Stack>
-                </Col>
-                <Col md="auto">
-                    
-                    <Form.Check 
-                        label="enable filter"
-                        onChange={()=>{setFilterEnabled(!filterEnabled)}}/>
-                        </Col>
-                        <Col>
-                        <Stack direction="horizontal" gap={3}>
-                        <Dropdown>
-                            <Dropdown.Toggle 
-                                variant="secondary" 
-                                size="sm"
-                                disabled={!filterEnabled}>
-                                Life Status
-                            </Dropdown.Toggle>
-                            <Dropdown.Menu>
-                                <StatusFilter
-                                    statusName="Alive"
-                                    setFilter={setFilter}
-                                    check={filter === 0}
-                                    i={0}/>
-                                <StatusFilter
-                                    statusName="Dead"
-                                    setFilter={setFilter}
-                                    check={filter === 1}
-                                    i={1}/>
-                                <StatusFilter
-                                    statusName="Shrödinger"
-                                    setFilter={setFilter}
-                                    check={filter === 2}
-                                    i={2}/>
-                            </Dropdown.Menu>
-                        </Dropdown>     
-                        <InputGroup size="sm">
-                            <FormControl placeholder="search" value={search}
-                                onChange={e => setSearch(e.target.value)}/>
-                            <Button variant="secondary" disabled>
-                                <img src={searchLogo} width="20" height="20"/>
-                            </Button>
-                        </InputGroup>
-                    </Stack>
-                </Col>
-            </Container>
-        </Navbar>
-        <AppBody search={search} filters={filterEnabled ? filter : undefined}/>
+        <Switch>
+            <Route path="/characters" exact>
+            <TopBar variant="search" search={search} setSearch={setSearch} filter={filter} setFilter={setFilter} filterEnabled={filterEnabled} />
+                <AppBody search={search} filters={filterEnabled ? filter : undefined}/>
+            </Route>
+            <Route path="/characters/:id" exact>
+                <TopBar variant="return" search={search} setSearch={setSearch} filter={filter} setFilter={setFilter} filterEnabled={filterEnabled} />
+            </Route>
+            <Route path="/">
+                <Redirect to="/characters"/>
+            </Route>
+        </Switch>
     </>)
 }
 
