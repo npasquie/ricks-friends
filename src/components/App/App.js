@@ -18,18 +18,12 @@ import searchLogo from "../../imgs/search.png"
 import "./App.css"
 import CharactersPage from "../CharacterPage/CharactersPage";
 import CharactersPagination from "../CharactersPagination/CharactersPagination";
-import lifeStatusesEnum from "../../misc/lifeStatusesEnum.json"
 import StatusFilter from "../StatusFilter";
 
 export default function App(){
     const [search, setSearch] = useState('')
-    const [filters, setFilters] = useState([true,true,true])
-
-    const toggleStatus = i => {
-        let newFilters = [...filters]
-        newFilters[i] = !filters[i]
-        setFilters(newFilters)
-    }
+    const [filter, setFilter] = useState(0)
+    const [filterEnabled, setFilterEnabled] = useState(false)
 
     return (<>
         <Navbar bg="primary">
@@ -43,26 +37,35 @@ export default function App(){
                     </Stack>
                 </Col>
                 <Col md="auto">
-                    <Stack direction="horizontal" gap={3}>   
+                    
+                    <Form.Check 
+                        label="enable filter"
+                        onChange={()=>{setFilterEnabled(!filterEnabled)}}/>
+                        </Col>
+                        <Col>
+                        <Stack direction="horizontal" gap={3}>
                         <Dropdown>
-                            <Dropdown.Toggle variant="secondary" size="sm">
-                                Filters
+                            <Dropdown.Toggle 
+                                variant="secondary" 
+                                size="sm"
+                                disabled={!filterEnabled}>
+                                Life Status
                             </Dropdown.Toggle>
                             <Dropdown.Menu>
                                 <StatusFilter
                                     statusName="Alive"
-                                    toggleStatus={toggleStatus}
-                                    check={filters[0]}
+                                    setFilter={setFilter}
+                                    check={filter === 0}
                                     i={0}/>
                                 <StatusFilter
                                     statusName="Dead"
-                                    toggleStatus={toggleStatus}
-                                    check={filters[1]}
+                                    setFilter={setFilter}
+                                    check={filter === 1}
                                     i={1}/>
                                 <StatusFilter
                                     statusName="Shrödinger"
-                                    toggleStatus={toggleStatus}
-                                    check={filters[2]}
+                                    setFilter={setFilter}
+                                    check={filter === 2}
                                     i={2}/>
                             </Dropdown.Menu>
                         </Dropdown>     
@@ -77,12 +80,12 @@ export default function App(){
                 </Col>
             </Container>
         </Navbar>
-        <AppBody search={search}/>
+        <AppBody search={search} filters={filterEnabled ? filter : undefined}/>
     </>)
 }
 
-function AppBody({search}){
-    const {loading, error, data} = useQuery(getNumberbOfPages(search))
+function AppBody({search, filters}){
+    const {loading, error, data} = useQuery(getNumberbOfPages(search, filters))
     const [page, setPage] = useState(1)
     let numberOfPages
 
@@ -98,7 +101,7 @@ function AppBody({search}){
                     page={page} 
                     setPage={setPage} 
                     numberOfPages={numberOfPages}/>
-                <CharactersPage page={page} search={search}/>
+                <CharactersPage page={page} search={search} filters={filters}/>
                 <CharactersPagination 
                     page={page} 
                     setPage={setPage} 
