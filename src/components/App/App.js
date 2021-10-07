@@ -4,9 +4,10 @@ import { useState } from "react";
 import { Route, Switch, Redirect } from "react-router-dom";
 import { getNumberbOfPages } from "../../queries";
 import "./App.css"
-import CharactersPage from "../CharacterPage/CharactersPage";
+import CharactersPage from "../CharactersPage/CharactersPage";
 import CharactersPagination from "../CharactersPagination/CharactersPagination";
 import TopBar from "../TopBar/TopBar";
+import CharacterDetails from "../CharacterDetails";
 
 export default function App(){
     const [search, setSearch] = useState('')
@@ -16,11 +17,12 @@ export default function App(){
     return (<>
         <Switch>
             <Route path="/characters" exact>
-            <TopBar variant="search" search={search} setSearch={setSearch} filter={filter} setFilter={setFilter} filterEnabled={filterEnabled} />
+            <TopBar variant="search" search={search} setSearch={setSearch} filter={filter} setFilter={setFilter} filterEnabled={filterEnabled}/>
                 <AppBody search={search} filters={filterEnabled ? filter : undefined}/>
             </Route>
-            <Route path="/characters/:id" exact>
-                <TopBar variant="return" search={search} setSearch={setSearch} filter={filter} setFilter={setFilter} filterEnabled={filterEnabled} />
+            <Route path="/characters/:id">
+                <TopBar variant="return" search={search} setSearch={setSearch} filter={filter} setFilter={setFilter} filterEnabled={filterEnabled}/>
+                <CharacterDetails/>
             </Route>
             <Route path="/">
                 <Redirect to="/characters"/>

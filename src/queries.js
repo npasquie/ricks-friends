@@ -51,12 +51,31 @@ export function getCharacter(id) {
     return(gql`{
         character(id: ${id}){
             name,
-            status,
             species,
-            type,
             gender,
-            created,
             image
           }
+    }`)
+}
+
+export function getCharacterWithDetails(id) {
+    return(gql`{
+        character(id: ${id}){
+            name,
+            species,
+            gender,
+            image,
+  			status,
+            origin{
+                name
+            },
+            location {
+                name 
+            },
+            created,
+            episode {
+                name
+            }
+        }
     }`)
 }
