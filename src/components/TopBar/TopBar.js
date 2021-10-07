@@ -31,6 +31,7 @@ export default function TopBar({variant, search, setSearch, filter, setFilter, f
                     <Col md="auto">
                         <Form.Check 
                             label="enable filter"
+                            checked={filterEnabled}
                             onChange={()=>{setFilterEnabled(!filterEnabled)}}/>
                     </Col>
                     <Col>
